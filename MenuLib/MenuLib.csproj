@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<GameBaseDir>E:\SteamLibrary\steamapps\common\REPO</GameBaseDir>
 		<GameAssemblyDir>$(GameBaseDir)\REPO_Data\Managed</GameAssemblyDir>
-		<AssemblyVersion>2.5.0</AssemblyVersion>
+		<AssemblyVersion>2.6.0</AssemblyVersion>
 	</PropertyGroup>
 
     <PropertyGroup>
