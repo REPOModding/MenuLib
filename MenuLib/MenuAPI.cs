@@ -62,7 +62,7 @@ public static class MenuAPI
         if (onRightClicked != null)
             menuButtonPopup.option2Event.AddListener(new UnityAction(onRightClicked));
         
-        MenuManager.instance.PagePopUpTwoOptions(menuButtonPopup, header, headerColor, content, "Yes", "No", true);
+        MenuManager.instance.PagePopUpTwoOptions(menuButtonPopup, header, null, headerColor, content, null, "Yes", null, "No", null, true);
     }
 
     public static REPOButton CreateREPOButton(string text, Action onClick, Transform parent, Vector2 localPosition = default)

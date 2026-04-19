@@ -33,7 +33,7 @@ internal static class REPOTemplates
                 case MenuPageIndex.Main:
                 {
                     simplePageTemplate = (RectTransform) menuPageTransform;
-                    buttonTemplate = (RectTransform) simplePageTemplate.Find("Menu Button - Quit game");
+                    buttonTemplate = (RectTransform) simplePageTemplate.Find("Buttons/Menu Button - Quit game");
                     break;
                 }
                 case MenuPageIndex.Settings:
