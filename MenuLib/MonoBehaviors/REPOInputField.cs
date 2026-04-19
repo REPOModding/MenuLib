@@ -19,6 +19,12 @@ public sealed class REPOInputField : REPOElement
     
     private void Awake()
     {
+        LocalizationChangedEvent[] localizationChangedEvents = GetComponentsInChildren<LocalizationChangedEvent>(true);
+        foreach (var localizationChangedEvent in localizationChangedEvents)
+        {
+            localizationChangedEvent.localizedAsset = null;
+        }
+
         rectTransform = transform as RectTransform;
         menuPage = GetComponentInParent<MenuPage>();
         menuSelectableElement = GetComponent<MenuSelectableElement>();

@@ -123,6 +123,12 @@ public sealed class REPOPopupPage : MonoBehaviour
     
     private void Awake()
     {
+        LocalizationChangedEvent[] localizationChangedEvents = GetComponentsInChildren<LocalizationChangedEvent>(true);
+        foreach (var localizationChangedEvent in localizationChangedEvents)
+        {
+            localizationChangedEvent.localizedAsset = null;
+        }
+
         menuPage = GetComponent<MenuPage>();
         headerTMP = GetComponentInChildren<TextMeshProUGUI>();
         menuScrollBox = GetComponentInChildren<MenuScrollBox>();

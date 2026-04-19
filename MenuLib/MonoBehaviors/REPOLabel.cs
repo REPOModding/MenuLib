@@ -9,6 +9,12 @@ public sealed class REPOLabel : REPOElement
     
     private void Awake()
     {
+        LocalizationChangedEvent[] localizationChangedEvents = GetComponentsInChildren<LocalizationChangedEvent>(true);
+        foreach (var localizationChangedEvent in localizationChangedEvents)
+        {
+            localizationChangedEvent.localizedAsset = null;
+        }
+
         rectTransform = (RectTransform) transform;
         labelTMP = GetComponentInChildren<TextMeshProUGUI>();
 

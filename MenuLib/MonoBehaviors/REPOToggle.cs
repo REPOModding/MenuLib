@@ -31,6 +31,12 @@ public sealed class REPOToggle : REPOElement
 
     private void Awake()
     {
+        LocalizationChangedEvent[] localizationChangedEvents = GetComponentsInChildren<LocalizationChangedEvent>(true);
+        foreach (var localizationChangedEvent in localizationChangedEvents)
+        {
+            localizationChangedEvent.localizedAsset = null;
+        }
+
         rectTransform = transform as RectTransform;
         labelTMP = GetComponentInChildren<TextMeshProUGUI>();
         optionBox = (RectTransform) transform.Find("Option Box");

@@ -44,6 +44,12 @@ public sealed class REPOAvatarPreview : REPOElement
     
     private void Awake()
     {
+        LocalizationChangedEvent[] localizationChangedEvents = GetComponentsInChildren<LocalizationChangedEvent>(true);
+        foreach (var localizationChangedEvent in localizationChangedEvents)
+        {
+            localizationChangedEvent.localizedAsset = null;
+        }
+
         rectTransform = gameObject.AddComponent<RectTransform>();
         rectTransform.pivot = Vector2.right;
         rectTransform.anchorMin = rectTransform.anchorMax = Vector2.zero;
