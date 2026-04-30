@@ -64,7 +64,7 @@ internal sealed class Entry : BaseUnityPlugin
     {
         var cursor = new ILCursor(il);
 
-        cursor.GotoNext(instruction => instruction.MatchBrfalse(out var label) && label.Target.OpCode == OpCodes.Ldarg_1);
+        cursor.GotoNext(instruction => instruction.MatchBrfalse(out var label) && label.Target.MatchLdarg(6));
 
         cursor.Index += 2;
         cursor.RemoveRange(27);
