@@ -329,7 +329,7 @@ public static class MenuAPI
         MenuManager.instance.PageAdd(menuPage);
         menuPage.StartCoroutine(REPOReflection.menuPage_LateStart.Invoke(menuPage, null) as IEnumerator);
 
-        REPOReflection.menuPage_AddedPageOnTop.SetValue(menuPage, false);
+        REPOReflection.menuPage_AddedPageOnTop.SetValue(menuPage, pageOnTop);
         
         if (!pageOnTop)
         {
