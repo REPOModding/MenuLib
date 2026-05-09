@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<GameBaseDir>E:\SteamLibrary\steamapps\common\REPO</GameBaseDir>
-		<GameAssemblyDir>$(GameBaseDir)\REPO_Data\Managed</GameAssemblyDir>
+		<GameBaseDir>/home/kaede159/.local/share/Steam/steamapps/common/REPO</GameBaseDir>
+		<GameAssemblyDir>$(GameBaseDir)/REPO_Data/Managed</GameAssemblyDir>
 		<AssemblyVersion>2.5.3</AssemblyVersion>
 	</PropertyGroup>
 
