@@ -176,10 +176,6 @@ public sealed class REPOSlider : REPOElement
         barSizeRectTransform = (RectTransform) transform.Find("BarSize");
         barSizeRectTransform.localPosition -= movementShift;
         
-        var labelSizeDelta = labelTMP.rectTransform.sizeDelta;
-        labelSizeDelta.y -= 10;
-        labelTMP.rectTransform.sizeDelta = labelSizeDelta;
-        
         var buttons = GetComponentsInChildren<Button>();
 
         var decrementButton = buttons[0];
