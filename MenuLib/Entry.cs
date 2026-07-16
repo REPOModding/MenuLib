@@ -17,7 +17,8 @@ internal sealed class Entry : BaseUnityPlugin
     private const string MOD_NAME = "Menu Lib";
         
     internal static readonly ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource(MOD_NAME);
-        
+     
+    //TEST BC MY RIDER IS BEING CRINGE
     private static void MenuPageMain_StartHook(Action<MenuPageMain> orig, MenuPageMain self)
     {
         orig.Invoke(self);
