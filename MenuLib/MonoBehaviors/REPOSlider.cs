@@ -74,7 +74,7 @@ public sealed class REPOSlider : REPOElement
     private MenuPage menuPage;
     private MenuSelectableElement menuSelectableElement;
 
-    private float normalizedValue => (value - min) / (max - min);
+    private float normalizedValue => (max - min) != 0f ? (value - min) / (max - min) : 0f;
     private float _min, _max = 1;
     private float previousValue, _precisionDecimal = .01f;
     private int _precision = 2;
@@ -262,7 +262,9 @@ public sealed class REPOSlider : REPOElement
         
         var multiplier = max - min;
         var steps = precisionDecimal / multiplier;
-        var normalized = Mathf.Round(Mathf.Clamp01(pointInRect / barSizeRectTransform.sizeDelta.x) / steps) * steps;
+        var normalized = multiplier <= float.Epsilon 
+            ? 0f 
+            : Mathf.Round(Mathf.Clamp01(pointInRect / barSizeRectTransform.sizeDelta.x) / steps) * steps;
         
         var newXPos = Mathf.Clamp(barSizeRectTransform.localPosition.x + normalized * barSizeRectTransform.sizeDelta.x, barSizeRectTransform.localPosition.x,
             barSizeRectTransform.localPosition.x + barSizeRectTransform.sizeDelta.x) - 2f;
