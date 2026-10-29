@@ -71,6 +71,8 @@ public sealed class REPOPopupPage : MonoBehaviour
     public ShouldCloseMenuDelegate onEscapePressed;
 
     internal bool pageWasActivatedOnce;
+
+    private bool hasStarted;
     
     private GameObject pageDimmerGameObject;
     private RawImage pageDimmerRawImage;
@@ -82,7 +84,7 @@ public sealed class REPOPopupPage : MonoBehaviour
     
     public void OpenPage(bool openOnTop)
     {
-        MenuAPI.OpenMenuPage(menuPage, openOnTop);
+        MenuAPI.OpenMenuPage(menuPage, openOnTop, hasStarted);
         pageWasActivatedOnce = true;
         
         scrollView.UpdateElements();
@@ -175,6 +177,8 @@ public sealed class REPOPopupPage : MonoBehaviour
     
     private void Start()
     {
+        hasStarted = true;
+        
         REPOReflection.menuScrollBox_ScrollerEndPosition.SetValue(menuScrollBox, 0);
         menuScrollBox.scroller.localPosition = menuScrollBox.scroller.localPosition with { y = 0 };
         

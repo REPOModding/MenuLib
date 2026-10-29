@@ -72,7 +72,7 @@ public sealed class REPOSlider : REPOElement
     private TextMeshProUGUI valueTMP, maskedValueTMP;
     
     private MenuPage menuPage;
-    private MenuSelectableElement menuSelectableElement;
+    private string menuID;
 
     private float normalizedValue => (value - min) / (max - min);
     private float _min, _max = 1;
@@ -131,7 +131,7 @@ public sealed class REPOSlider : REPOElement
 
         rectTransform = (RectTransform) transform;
         menuPage = GetComponentInParent<MenuPage>();
-        menuSelectableElement = GetComponent<MenuSelectableElement>();
+        menuID = SemiFunc.MenuGetSelectableID(gameObject);
         labelTMP = GetComponentInChildren<TextMeshProUGUI>();
         descriptionTMP = transform.Find("Big Setting Text").GetComponent<TextMeshProUGUI>();
         valueTMP = transform.Find("Bar Text").GetComponent<TextMeshProUGUI>();
@@ -199,7 +199,7 @@ public sealed class REPOSlider : REPOElement
     {
         HandleDescription();
         
-        var isHoveringUI = SemiFunc.UIMouseHover(menuPage, barSizeRectTransform, REPOReflection.menuSelectableElement_MenuID.GetValue(menuSelectableElement) as string, 5f, 5f);
+        var isHoveringUI = SemiFunc.UIMouseHover(menuPage, barSizeRectTransform, menuID, 5f, 5f);
 
         if (isHoveringUI)
         {

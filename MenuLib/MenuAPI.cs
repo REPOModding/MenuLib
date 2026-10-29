@@ -257,6 +257,8 @@ public static class MenuAPI
         var newRectTransform = Object.Instantiate(REPOTemplates.popupPageTemplate, MenuHolder.instance.transform);
         newRectTransform.name = $"Menu Page {headerText}";
 
+        newRectTransform.localPosition = REPOTemplates.popupPageTemplate.localPosition;
+
         var repoPopupPage = newRectTransform.gameObject.AddComponent<REPOPopupPage>();
 
         repoPopupPage.rectTransform.localPosition = localPosition ?? new Vector2(-280, 0);
@@ -301,7 +303,7 @@ public static class MenuAPI
         return repoObjectPreview;
     }
     
-    internal static void OpenMenuPage(MenuPage menuPage, bool pageOnTop)
+    internal static void OpenMenuPage(MenuPage menuPage, bool pageOnTop, bool resetPosition = true)
     {
         var currentMenuPage = REPOReflection.menuManager_CurrentMenuPage.GetValue(MenuManager.instance) as MenuPage;
         
@@ -323,7 +325,7 @@ public static class MenuAPI
         menuPage.transform.SetAsLastSibling();
 
         menuPage.enabled = true;
-        menuPage.ResetPage();
+        if (resetPosition) menuPage.ResetPage();
         menuPage.PageStateSet(MenuPage.PageState.Opening);
         
         MenuManager.instance.PageAdd(menuPage);

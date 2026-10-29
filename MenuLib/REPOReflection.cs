@@ -21,7 +21,6 @@ public static class REPOReflection
     public static readonly FieldInfo menuScrollBox_ScrollHeight = AccessTools.Field(typeof(MenuScrollBox), "scrollHeight");
     public static readonly FieldInfo menuScrollBox_ScrollAmount = AccessTools.Field(typeof(MenuScrollBox), "scrollAmount");
     public static readonly FieldInfo menuScrollBox_ParentPage = AccessTools.Field(typeof(MenuScrollBox), "parentPage");
-    public static readonly FieldInfo menuSelectableElement_MenuID = AccessTools.Field(typeof(MenuSelectableElement), "menuID");
     public static readonly MethodInfo menuManager_PageInactiveAdd = AccessTools.Method(typeof(MenuManager), "PageInactiveAdd");
     public static readonly MethodInfo menuPage_LateStart = AccessTools.Method(typeof(MenuPage), "LateStart");
 }
