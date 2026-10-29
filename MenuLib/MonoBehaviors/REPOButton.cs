@@ -36,6 +36,8 @@ public sealed class REPOButton : REPOElement
         rectTransform = transform as RectTransform;
         button = GetComponent<Button>();
         menuButton = GetComponent<MenuButton>();
+        if (menuButton != null)
+            REPOReflection.menuButton_RectTransform.SetValue(menuButton, rectTransform);
         labelTMP = GetComponentInChildren<TextMeshProUGUI>();
         
         button.onClick = new Button.ButtonClickedEvent();
