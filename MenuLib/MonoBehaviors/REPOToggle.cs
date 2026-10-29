@@ -20,8 +20,8 @@ public sealed class REPOToggle : REPOElement
     
     public void SetState(bool newState, bool invokeCallback)
     {
-        targetPosition = newState ? new Vector3(137.8f, 12.3f) : new Vector3(212.644f, 12.3f);
-        targetScale = newState ? new Vector3(73f, 22f, 1f) : new Vector3(74f, 22f, 1f);
+        targetPosition = newState ? new Vector3(138.2f, 11.5f) : new Vector3(213.2f, 11.5f);
+        targetScale = new Vector3(73f, 21f, 1f);
         
         if (invokeCallback && state != newState)
             onToggle?.Invoke(newState);
@@ -42,17 +42,19 @@ public sealed class REPOToggle : REPOElement
         optionBox = (RectTransform) transform.Find("Option Box");
         optionBoxBehind = (RectTransform) transform.Find("Option Box Behind");
 
-        labelTMP.rectTransform.sizeDelta -= new Vector2(0, 10);        
+        rectTransform.sizeDelta -= new Vector2(0, 2);
+        labelTMP.rectTransform.sizeDelta -= new Vector2(0, 2);        
         
-        var horizontalShift = Vector3.right * 100f;
+        var horizontalShift = Vector3.left * 5.3f;
+        var verticalShift = Vector3.up;
         
-        transform.Find("SliderBG").localPosition += horizontalShift;
+        transform.Find("SliderBG").localPosition += horizontalShift + verticalShift;
 
-        labelTMP.rectTransform.localPosition += horizontalShift;
+        labelTMP.rectTransform.localPosition += horizontalShift + verticalShift;
 
-        transform.Find("RawImage").localPosition += horizontalShift;
-        transform.Find("RawImage (1)").localPosition += horizontalShift;
-        transform.Find("RawImage (2)").localPosition += horizontalShift;
+        transform.Find("RawImage").localPosition += horizontalShift + verticalShift;
+        transform.Find("RawImage (1) Left").localPosition += horizontalShift + verticalShift;
+        transform.Find("RawImage (1) Right").localPosition += horizontalShift + verticalShift;
        
         var buttons = GetComponentsInChildren<Button>();
         
@@ -86,6 +88,6 @@ public sealed class REPOToggle : REPOElement
         optionBox.localPosition = Vector3.Lerp(optionBox.localPosition, targetPosition, 20f * Time.deltaTime);
         optionBox.localScale = Vector3.Lerp(optionBox.localScale, targetScale / 10f, 20f * Time.deltaTime);
         optionBoxBehind.localPosition = Vector3.Lerp(optionBoxBehind.localPosition, targetPosition, 20f * Time.deltaTime);
-        optionBoxBehind.localScale = Vector3.Lerp(optionBoxBehind.localScale, new Vector3(targetScale.x + 4f, targetScale.y + 2f, 1f) / 10f, 20f * Time.deltaTime);
+        optionBoxBehind.localScale = Vector3.Lerp(optionBoxBehind.localScale, new Vector3(targetScale.x + 2f, targetScale.y + 2f, 1f) / 10f, 20f * Time.deltaTime);
     }
 }

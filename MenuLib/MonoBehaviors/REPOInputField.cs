@@ -30,15 +30,20 @@ public sealed class REPOInputField : REPOElement
         menuID = SemiFunc.MenuGetSelectableID(gameObject);
         labelTMP = GetComponentInChildren<TextMeshProUGUI>();
         
-        labelTMP.rectTransform.sizeDelta -= new Vector2(0, 10);
+        rectTransform.sizeDelta -= new Vector2(0, 2);
+        labelTMP.rectTransform.sizeDelta -= new Vector2(0, 2);
         
-        var horizontalShift = Vector3.right * 100f;
+        var horizontalShift = Vector3.left * 5.3f;
+        var verticalShift = Vector3.up;
         
-        transform.Find("SliderBG").localPosition += horizontalShift;
-        transform.Find("RawImage").localPosition += horizontalShift;
-        transform.Find("RawImage (1)").localPosition += horizontalShift;
+        transform.Find("SliderBG").localPosition += horizontalShift + verticalShift;
+        transform.Find("RawImage").localPosition += horizontalShift + verticalShift;
 
-        labelTMP.rectTransform.localPosition += horizontalShift;
+        labelTMP.rectTransform.localPosition += horizontalShift + verticalShift;
+
+        var inputBox = (RectTransform) transform.Find("RawImage (1) Left");
+        inputBox.localPosition = transform.Find("RawImage").localPosition;
+        inputBox.sizeDelta = new Vector2(148f, 21f);
 
         TextMeshProUGUI inputTMP = null;
         for (var i = 0; i < transform.childCount; i++)
@@ -47,7 +52,7 @@ public sealed class REPOInputField : REPOElement
 
             switch (child.name)
             {
-                case "Option Box" or "Option Box Behind" or "RawImage (2)":
+                case "Option Box" or "Option Box Behind" or "RawImage (1) Right":
                 {
                     Destroy(child.gameObject);
                     break;
@@ -67,6 +72,8 @@ public sealed class REPOInputField : REPOElement
         }
         
         inputTMP!.rectTransform.pivot = Vector2.zero;
+        inputTMP.rectTransform.anchorMin = Vector2.zero;
+        inputTMP.rectTransform.anchorMax = Vector2.one;
         inputTMP.fontStyle = FontStyles.Normal;
 
         inputTMP.enableAutoSizing = false;
@@ -77,7 +84,7 @@ public sealed class REPOInputField : REPOElement
         inputAreaRectTransform = new GameObject("Input Area") { transform = { parent = transform } }.AddComponent<RectTransform>();
         inputAreaRectTransform.sizeDelta = new Vector2(146.5f, 20f);
         inputAreaRectTransform.pivot = Vector2.zero;
-        inputAreaRectTransform.localPosition = new Vector3(2f, 2.5f, 0) + horizontalShift;
+        inputAreaRectTransform.localPosition = new Vector3(108f, 1.5f, 0) + horizontalShift;
 
         inputAreaRectTransform.gameObject.AddComponent<RectMask2D>();
 

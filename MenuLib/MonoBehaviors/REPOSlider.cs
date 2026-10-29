@@ -77,10 +77,12 @@ public sealed class REPOSlider : REPOElement
     private float normalizedValue => (max - min) != 0f ? (value - min) / (max - min) : 0f;
     private float _min, _max = 1;
     private float previousValue, _precisionDecimal = .01f;
+    private float defaultHeight;
     private int _precision = 2;
     private string[] _stringOptions = [];
     private string currentDescription;
     private bool isHovering;
+    private bool isBigSlider;
 
     private bool hasValueChanged => Math.Abs(value - previousValue) > float.Epsilon;
     
@@ -130,12 +132,22 @@ public sealed class REPOSlider : REPOElement
         }
 
         rectTransform = (RectTransform) transform;
+        isBigSlider = rectTransform.pivot == Vector2.up;
+        rectTransform.pivot = Vector2.zero;
         menuPage = GetComponentInParent<MenuPage>();
         menuID = SemiFunc.MenuGetSelectableID(gameObject);
         labelTMP = GetComponentInChildren<TextMeshProUGUI>();
-        descriptionTMP = transform.Find("Big Setting Text").GetComponent<TextMeshProUGUI>();
         valueTMP = transform.Find("Bar Text").GetComponent<TextMeshProUGUI>();
         valueTMP.fontStyle = FontStyles.Normal;
+        
+        descriptionTMP = Instantiate(valueTMP, transform);
+        descriptionTMP.name = "Big Setting Text";
+        descriptionTMP.rectTransform.anchoredPosition = isBigSlider ? new Vector2(0, -20.5f) : new Vector2(5f, -19f);
+        descriptionTMP.rectTransform.sizeDelta = new Vector2(251.4f, 31f);
+        descriptionTMP.color = new Color(1f, .55f, 0f);
+        descriptionTMP.fontStyle = FontStyles.UpperCase;
+        descriptionTMP.margin = new Vector4(5, 0, 5, 0);
+        descriptionTMP.fontSize = 21.6f;
         
         barMaskRectTransform = (RectTransform) transform.Find("MaskedText"); 
         maskedValueTMP = barMaskRectTransform.GetComponentInChildren<TextMeshProUGUI>();
@@ -143,8 +155,14 @@ public sealed class REPOSlider : REPOElement
         barPointerRectTransform = (RectTransform) transform.Find("Bar Pointer").transform;
         
         var movementShift = new Vector3(5.3f, 0);
+        var verticalShift = isBigSlider ? Vector3.zero : Vector3.up * 1.5f;
         
-        labelTMP.rectTransform.localPosition -= movementShift;
+        if (!isBigSlider)
+            rectTransform.sizeDelta += new Vector2(0, 3);
+        
+        defaultHeight = rectTransform.sizeDelta.y;
+        
+        labelTMP.rectTransform.localPosition -= movementShift + verticalShift;
 
         descriptionTMP.alignment = TextAlignmentOptions.Center;
         descriptionTMP.enableWordWrapping = descriptionTMP.enableAutoSizing = false;
@@ -155,23 +173,36 @@ public sealed class REPOSlider : REPOElement
         repoTextScroller.textMeshPro = descriptionTMP;
 
         descriptionTMP.rectTransform.sizeDelta -= new Vector2(0, 4);
-        descriptionTMP.rectTransform.localPosition -= movementShift;
+        descriptionTMP.rectTransform.localPosition -= movementShift + verticalShift;
 
         sliderBackgroundRectTransform = (RectTransform) transform.Find("SliderBG");
         backgroundFillRectTransform = (RectTransform) sliderBackgroundRectTransform.Find("RawImage (2)");
         backgroundOutlineRectTransform = (RectTransform) sliderBackgroundRectTransform.Find("RawImage (3)");
         
-        sliderBackgroundRectTransform.localPosition -= movementShift;
+        if (!isBigSlider)
+        {
+            backgroundFillRectTransform.pivot = backgroundOutlineRectTransform.pivot = new Vector2(.5f, 1f);
+            backgroundFillRectTransform.anchoredPosition = backgroundFillRectTransform.anchoredPosition with { y = 6.4f };
+            backgroundOutlineRectTransform.anchoredPosition = backgroundOutlineRectTransform.anchoredPosition with { y = 7.5f };
+        }
+        
+        sliderBackgroundRectTransform.localPosition -= movementShift + verticalShift;
 
-        valueTMP.rectTransform.localPosition -= movementShift;
-        maskedValueTMP.rectTransform.parent.localPosition -= movementShift;
+        valueTMP.rectTransform.localPosition -= movementShift + verticalShift;
+        maskedValueTMP.rectTransform.parent.localPosition -= movementShift + verticalShift;
         
         var bar = transform.Find("Bar");
-        bar.localPosition -= movementShift;
+        bar.localPosition -= movementShift + verticalShift;
+        barPointerRectTransform.localPosition -= verticalShift;
         
-        barRectTransform = (RectTransform) bar.Find("RawImage");
-        barRectTransform.pivot = Vector2.zero;
-        barRectTransform.localPosition = new Vector2(0f, -5f);
+        if (!isBigSlider)
+        {
+            barRectTransform = (RectTransform) bar.Find("RawImage");
+            barRectTransform.pivot = Vector2.zero;
+            barRectTransform.localPosition = new Vector2(0f, -5f);
+        }
+        else
+            barRectTransform = (RectTransform) bar;
 
         barSizeRectTransform = (RectTransform) transform.Find("BarSize");
         barSizeRectTransform.localPosition -= movementShift;
@@ -188,10 +219,10 @@ public sealed class REPOSlider : REPOElement
         incrementButton.onClick = new Button.ButtonClickedEvent();
         incrementButton.onClick.AddListener(Increment);
         
-        Destroy(sliderBackgroundRectTransform.Find("RawImage (4)").gameObject);
-        Destroy(sliderBackgroundRectTransform.Find("RawImage (5)").gameObject);
+        if (isBigSlider)
+            Destroy(GetComponent<LocalizeChangedUI>());
+        
         Destroy(bar.Find("Extra Bar").gameObject);
-        Destroy(GetComponent<MenuSliderMicrophone>());
         Destroy(GetComponent<MenuSlider>());
     }
 
@@ -244,14 +275,22 @@ public sealed class REPOSlider : REPOElement
 
         var hasDescription = !string.IsNullOrEmpty(descriptionTMP.text);
         
-        backgroundFillRectTransform.sizeDelta = new Vector2(109.8f, hasDescription ? 33 : 15f);
-        backgroundOutlineRectTransform.sizeDelta = new Vector2(108, hasDescription ? 30.6f : 15f);
+        if (!isBigSlider)
+        {
+            backgroundFillRectTransform.sizeDelta = new Vector2(109.8f, hasDescription ? 33 : 15f);
+            backgroundOutlineRectTransform.sizeDelta = new Vector2(108, hasDescription ? 30.6f : 15f);
+        }
+
+        var descriptionHeight = defaultHeight + (isBigSlider ? 18.8f : 23.8f);
+        var heightDifference = (hasDescription ? descriptionHeight : defaultHeight) - rectTransform.sizeDelta.y;
+
+        foreach (RectTransform child in transform)
+            child.anchoredPosition += new Vector2(0, (1 - child.anchorMax.y) * heightDifference);
+
+        rectTransform.sizeDelta += new Vector2(0, heightDifference);
 
         if (repoScrollViewElement)
-        {
-            repoScrollViewElement.bottomPadding = hasDescription ? 25f : 1f;
             repoScrollViewElement.onSettingChanged?.Invoke();
-        }
         
         currentDescription = descriptionTMP.text;
     }
@@ -290,7 +329,13 @@ public sealed class REPOSlider : REPOElement
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        barRectTransform.sizeDelta = barMaskRectTransform.sizeDelta = new Vector2(newNormalizedBarValue * 100, 10);
+        if (isBigSlider)
+        {
+            barRectTransform.localScale = barRectTransform.localScale with { x = newNormalizedBarValue };
+            barMaskRectTransform.sizeDelta = barMaskRectTransform.sizeDelta with { x = barSizeRectTransform.sizeDelta.x * newNormalizedBarValue };
+        }
+        else
+            barRectTransform.sizeDelta = barMaskRectTransform.sizeDelta = new Vector2(newNormalizedBarValue * 100, 10);
     }
 
     private void UpdateBarText()

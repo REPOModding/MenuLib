@@ -11,6 +11,7 @@ internal static class REPOTemplates
         popupPageTemplate,
         toggleTemplate,
         sliderTemplate,
+        bigSliderTemplate,
         labelTemplate;
 
     internal static readonly Transform avatarPreviewTemplate;
@@ -50,12 +51,17 @@ internal static class REPOTemplates
                 {
                     var scroller = menuPageTransform.Find("Menu Scroll Box/Mask/Scroller");
                     toggleTemplate = (RectTransform) scroller.Find("Bool Setting - Push to Talk");
-                    sliderTemplate = (RectTransform) scroller.Find("Slider - microphone");
+                    sliderTemplate = (RectTransform) scroller.Find("Slider - Text To speech");
                     break;
                 }
                 case MenuPageIndex.SettingsControls:
                 {
                     labelTemplate = (RectTransform) menuPageTransform.Find("Scroll Box/Mask/Scroller").Find("Header Movement");
+                    break;
+                }
+                case MenuPageIndex.SettingsLanguage:
+                {
+                    bigSliderTemplate = (RectTransform) menuPageTransform.Find("Scroll Box/Mask/Scroller").Find("Slider - Text to Speech Language");
                     break;
                 }
                 case MenuPageIndex.Escape:

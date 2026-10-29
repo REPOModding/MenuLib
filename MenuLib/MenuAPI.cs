@@ -216,6 +216,106 @@ public static class MenuAPI
         return repoSlider;
     }
 
+    public static REPOSlider CreateREPOBigSlider(string text, string description, Action<float> onValueChanged, Transform parent, Vector2 localPosition = default, float min = 0f, float max = 1f, int precision = 2, float defaultValue = 0f, string prefix = "", string postfix = "", REPOSlider.BarBehavior barBehavior = REPOSlider.BarBehavior.UpdateWithValue)
+    {
+        var newRectTransform = Object.Instantiate(REPOTemplates.bigSliderTemplate, parent);
+        newRectTransform.name = $"Float Slider - {text}";
+
+        newRectTransform.localPosition = localPosition;
+
+        var repoSlider = newRectTransform.gameObject.AddComponent<REPOSlider>();
+
+        repoSlider.labelTMP.text = text;
+        repoSlider.descriptionTMP.text = description;
+        repoSlider.onValueChanged = onValueChanged;
+        repoSlider.min = min;
+        repoSlider.max = max;
+        repoSlider.precision = precision;
+        repoSlider.prefix = prefix;
+        repoSlider.postfix = postfix;
+        repoSlider.barBehavior = barBehavior;
+
+        repoSlider.SetValue(defaultValue, false);
+        return repoSlider;
+    }
+
+    public static REPOSlider CreateREPOBigSlider(string text, string description, Action<int> onValueChanged, Transform parent, Vector2 localPosition = default, int min = 0, int max = 1, int defaultValue = 0, string prefix = "", string postfix = "", REPOSlider.BarBehavior barBehavior = REPOSlider.BarBehavior.UpdateWithValue)
+    {
+        var newRectTransform = Object.Instantiate(REPOTemplates.bigSliderTemplate, parent);
+        newRectTransform.name = $"Int Slider - {text}";
+
+        newRectTransform.localPosition = localPosition;
+
+        var repoSlider = newRectTransform.gameObject.AddComponent<REPOSlider>();
+
+        repoSlider.labelTMP.text = text;
+        repoSlider.descriptionTMP.text = description;
+        repoSlider.onValueChanged = f => onValueChanged.Invoke(Convert.ToInt32(f));
+        repoSlider.min = min;
+        repoSlider.max = max;
+        repoSlider.precision = 0;
+        repoSlider.prefix = prefix;
+        repoSlider.postfix = postfix;
+        repoSlider.barBehavior = barBehavior;
+
+        repoSlider.SetValue(defaultValue, false);
+        return repoSlider;
+    }
+
+    public static REPOSlider CreateREPOBigSlider(string text, string description, Action<string> onOptionChanged, Transform parent, string[] stringOptions, string defaultOption, Vector2 localPosition = default, string prefix = "", string postfix = "", REPOSlider.BarBehavior barBehavior = REPOSlider.BarBehavior.UpdateWithValue)
+    {
+        var newRectTransform = Object.Instantiate(REPOTemplates.bigSliderTemplate, parent);
+        newRectTransform.name = $"Option Slider - {text}";
+
+        newRectTransform.localPosition = localPosition;
+
+        var repoSlider = newRectTransform.gameObject.AddComponent<REPOSlider>();
+
+        repoSlider.labelTMP.text = text;
+        repoSlider.descriptionTMP.text = description;
+        repoSlider.onValueChanged = f =>
+            onOptionChanged.Invoke(repoSlider.stringOptions.ElementAtOrDefault(Convert.ToInt32(f)) ??
+                                   repoSlider.stringOptions.FirstOrDefault());
+        repoSlider.stringOptions = stringOptions;
+        repoSlider.prefix = prefix;
+        repoSlider.postfix = postfix;
+        repoSlider.barBehavior = barBehavior;
+
+        var defaultIndex = Array.IndexOf(stringOptions, defaultOption);
+
+        if (defaultIndex == -1)
+            defaultIndex = 0;
+
+        repoSlider.SetValue(defaultIndex, false);
+        return repoSlider;
+    }
+
+    public static REPOSlider CreateREPOBigSlider(string text, string description, Action<int> onOptionChanged, Transform parent, string[] stringOptions, string defaultOption, Vector2 localPosition = default, string prefix = "", string postfix = "", REPOSlider.BarBehavior barBehavior = REPOSlider.BarBehavior.UpdateWithValue)
+    {
+        var newRectTransform = Object.Instantiate(REPOTemplates.bigSliderTemplate, parent);
+        newRectTransform.name = $"Option Slider - {text}";
+
+        newRectTransform.localPosition = localPosition;
+
+        var repoSlider = newRectTransform.gameObject.AddComponent<REPOSlider>();
+
+        repoSlider.labelTMP.text = text;
+        repoSlider.descriptionTMP.text = description;
+        repoSlider.onValueChanged = f => onOptionChanged.Invoke(Convert.ToInt32(f));
+        repoSlider.stringOptions = stringOptions;
+        repoSlider.prefix = prefix;
+        repoSlider.postfix = postfix;
+        repoSlider.barBehavior = barBehavior;
+
+        var defaultIndex = Array.IndexOf(stringOptions, defaultOption);
+
+        if (defaultIndex == -1)
+            defaultIndex = 0;
+
+        repoSlider.SetValue(defaultIndex, false);
+        return repoSlider;
+    }
+
     public static REPOLabel CreateREPOLabel(string text, Transform parent, Vector2 localPosition = default)
     {
         var newRectTransform = Object.Instantiate(REPOTemplates.labelTemplate, parent);
