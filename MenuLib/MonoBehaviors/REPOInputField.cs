@@ -13,7 +13,8 @@ public sealed class REPOInputField : REPOElement
 
     private RectTransform inputAreaRectTransform;
     private MenuPage menuPage;
-    private string menuID;
+    private MenuScrollBox menuScrollBox;
+	private string menuID;
 
     public Vector2 GetLabelSize() => labelTMP.GetPreferredValues();
     
@@ -27,7 +28,8 @@ public sealed class REPOInputField : REPOElement
 
         rectTransform = transform as RectTransform;
         menuPage = GetComponentInParent<MenuPage>();
-        menuID = SemiFunc.MenuGetSelectableID(gameObject);
+		menuScrollBox = GetComponentInParent<MenuScrollBox>();
+		menuID = SemiFunc.MenuGetSelectableID(gameObject);
         labelTMP = GetComponentInChildren<TextMeshProUGUI>();
         
         rectTransform.sizeDelta -= new Vector2(0, 2);
@@ -101,9 +103,11 @@ public sealed class REPOInputField : REPOElement
     
     private void Update()
     {
-        inputStringSystem.SetHovering(SemiFunc.UIMouseHover(menuPage, inputAreaRectTransform, menuID, 2f, 2f));
+        inputStringSystem.SetHovering(SemiFunc.UIMouseHover(menuPage, inputAreaRectTransform, menuID, 2f, 2f, menuScrollBox));
         
         if (Mouse.current.leftButton.wasPressedThisFrame)
             inputStringSystem.isFocused = inputStringSystem.isHovering;
     }
+
+	private void OnTransformParentChanged() => menuScrollBox = GetComponentInParent<MenuScrollBox>();
 }

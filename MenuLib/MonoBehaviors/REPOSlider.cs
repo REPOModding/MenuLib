@@ -72,7 +72,8 @@ public sealed class REPOSlider : REPOElement
     private TextMeshProUGUI valueTMP, maskedValueTMP;
     
     private MenuPage menuPage;
-    private string menuID;
+	private MenuScrollBox menuScrollBox;
+	private string menuID;
 
     private float normalizedValue => (max - min) != 0f ? (value - min) / (max - min) : 0f;
     private float _min, _max = 1;
@@ -135,7 +136,8 @@ public sealed class REPOSlider : REPOElement
         isBigSlider = rectTransform.pivot == Vector2.up;
         rectTransform.pivot = Vector2.zero;
         menuPage = GetComponentInParent<MenuPage>();
-        menuID = SemiFunc.MenuGetSelectableID(gameObject);
+		menuScrollBox = GetComponentInParent<MenuScrollBox>();
+		menuID = SemiFunc.MenuGetSelectableID(gameObject);
         labelTMP = GetComponentInChildren<TextMeshProUGUI>();
         valueTMP = transform.Find("Bar Text").GetComponent<TextMeshProUGUI>();
         valueTMP.fontStyle = FontStyles.Normal;
@@ -230,7 +232,7 @@ public sealed class REPOSlider : REPOElement
     {
         HandleDescription();
         
-        var isHoveringUI = SemiFunc.UIMouseHover(menuPage, barSizeRectTransform, menuID, 5f, 5f);
+        var isHoveringUI = SemiFunc.UIMouseHover(menuPage, barSizeRectTransform, menuID, 5f, 5f, menuScrollBox);
 
         if (isHoveringUI)
         {
@@ -267,8 +269,16 @@ public sealed class REPOSlider : REPOElement
         
         onValueChanged.Invoke(previousValue = value);
     }
-    
-    private void HandleDescription()
+
+	private void OnTransformParentChanged()
+	{
+		menuScrollBox = GetComponentInParent<MenuScrollBox>();
+
+		foreach (var menuButton in GetComponentsInChildren<MenuButton>())
+			REPOReflection.menuButton_MenuScrollBox.SetValue(menuButton, menuScrollBox);
+	}
+
+	private void HandleDescription()
     {
         if (descriptionTMP.text == currentDescription)
             return;

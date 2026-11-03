@@ -76,9 +76,12 @@ public sealed class REPOToggle : REPOElement
     
     private void OnTransformParentChanged()
     {
-        foreach (var menuButton in GetComponentsInChildren<MenuButton>())
-            REPOReflection.menuButton_ParentPage.SetValue(menuButton, GetComponentInParent<MenuPage>());
-    }
+		foreach (var menuButton in GetComponentsInChildren<MenuButton>())
+		{
+			REPOReflection.menuButton_ParentPage.SetValue(menuButton, GetComponentInParent<MenuPage>());
+			REPOReflection.menuButton_MenuScrollBox.SetValue(menuButton, GetComponentInParent<MenuScrollBox>());
+		}
+	}
     
     private void Update()
     {
