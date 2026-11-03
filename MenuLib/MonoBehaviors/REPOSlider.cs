@@ -104,8 +104,8 @@ public sealed class REPOSlider : REPOElement
     {
         var newValue = value - precisionDecimal;
 
-        if (Math.Abs(value - min) < float.Epsilon)
-            newValue = max;
+		if (stringOptions?.Length > 0 && Math.Abs(value - min) < float.Epsilon)
+			newValue = max;
         else if (newValue < min)
             newValue = min;
         
@@ -116,8 +116,8 @@ public sealed class REPOSlider : REPOElement
     {
         var newValue = value + precisionDecimal;
 
-        if (Math.Abs(max - value) < float.Epsilon)
-            newValue = min;
+		if (stringOptions?.Length > 0 && Math.Abs(max - value) < float.Epsilon)
+			newValue = min;
         else if (newValue > max)
             newValue = max;
         
