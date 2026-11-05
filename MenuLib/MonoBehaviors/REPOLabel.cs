@@ -19,11 +19,11 @@ public sealed class REPOLabel : REPOElement
         labelTMP = GetComponentInChildren<TextMeshProUGUI>();
 
         labelTMP.rectTransform.pivot = rectTransform.pivot = Vector2.zero;
-		labelTMP.rectTransform.anchorMin = labelTMP.rectTransform.anchorMax = Vector2.zero;
-		labelTMP.rectTransform.sizeDelta = rectTransform.sizeDelta = new Vector2(200f, 30f);
+        labelTMP.rectTransform.anchorMin = labelTMP.rectTransform.anchorMax = Vector2.zero;
+        labelTMP.rectTransform.sizeDelta = rectTransform.sizeDelta = new Vector2(200f, 30f);
         
         labelTMP.fontSize = 30;
-        labelTMP.enableWordWrapping = labelTMP.enableAutoSizing = false;
+        labelTMP.textWrappingMode = TextWrappingModes.NoWrap;
         labelTMP.alignment = TextAlignmentOptions.Left;
         labelTMP.margin = Vector4.zero;
     }

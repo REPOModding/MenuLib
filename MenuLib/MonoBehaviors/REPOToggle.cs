@@ -14,13 +14,13 @@ public sealed class REPOToggle : REPOElement
     public Action<bool> onToggle;
     
     public bool state { get; private set; }
-    
-    private RectTransform optionBox, optionBoxBehind;
+
+    private RectTransform optionBox, optionBoxBehind, leftOptionRectTransform, rightOptionRectTransform;
     private Vector3 targetPosition, targetScale;
     
     public void SetState(bool newState, bool invokeCallback)
     {
-        targetPosition = newState ? new Vector3(138.2f, 11.5f) : new Vector3(213.2f, 11.5f);
+        targetPosition = newState ? leftOptionRectTransform.localPosition : rightOptionRectTransform.localPosition;
         targetScale = new Vector3(73f, 21f, 1f);
         
         if (invokeCallback && state != newState)
@@ -40,7 +40,9 @@ public sealed class REPOToggle : REPOElement
         rectTransform = transform as RectTransform;
         labelTMP = GetComponentInChildren<TextMeshProUGUI>();
         optionBox = (RectTransform) transform.Find("Option Box");
-        optionBoxBehind = (RectTransform) transform.Find("Option Box Behind");
+        optionBoxBehind = (RectTransform)transform.Find("Option Box Behind");
+        leftOptionRectTransform = (RectTransform)transform.Find("RawImage (1) Left");
+        rightOptionRectTransform = (RectTransform)transform.Find("RawImage (1) Right");
 
         rectTransform.sizeDelta -= new Vector2(0, 2);
         labelTMP.rectTransform.sizeDelta -= new Vector2(0, 2);        
@@ -53,8 +55,8 @@ public sealed class REPOToggle : REPOElement
         labelTMP.rectTransform.localPosition += horizontalShift + verticalShift;
 
         transform.Find("RawImage").localPosition += horizontalShift + verticalShift;
-        transform.Find("RawImage (1) Left").localPosition += horizontalShift + verticalShift;
-        transform.Find("RawImage (1) Right").localPosition += horizontalShift + verticalShift;
+        leftOptionRectTransform.localPosition += horizontalShift + verticalShift;
+        rightOptionRectTransform.localPosition += horizontalShift + verticalShift;
        
         var buttons = GetComponentsInChildren<Button>();
         
@@ -76,12 +78,12 @@ public sealed class REPOToggle : REPOElement
     
     private void OnTransformParentChanged()
     {
-		foreach (var menuButton in GetComponentsInChildren<MenuButton>())
-		{
-			REPOReflection.menuButton_ParentPage.SetValue(menuButton, GetComponentInParent<MenuPage>());
-			REPOReflection.menuButton_MenuScrollBox.SetValue(menuButton, GetComponentInParent<MenuScrollBox>());
-		}
-	}
+        foreach (var menuButton in GetComponentsInChildren<MenuButton>())
+        {
+            REPOReflection.menuButton_ParentPage.SetValue(menuButton, GetComponentInParent<MenuPage>());
+            REPOReflection.menuButton_MenuScrollBox.SetValue(menuButton, GetComponentInParent<MenuScrollBox>());
+        }
+    }
     
     private void Update()
     {

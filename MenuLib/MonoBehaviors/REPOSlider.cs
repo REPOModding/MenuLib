@@ -72,8 +72,8 @@ public sealed class REPOSlider : REPOElement
     private TextMeshProUGUI valueTMP, maskedValueTMP;
     
     private MenuPage menuPage;
-	private MenuScrollBox menuScrollBox;
-	private string menuID;
+    private MenuScrollBox menuScrollBox;
+    private string menuID;
 
     private float normalizedValue => (max - min) != 0f ? (value - min) / (max - min) : 0f;
     private float _min, _max = 1;
@@ -104,8 +104,8 @@ public sealed class REPOSlider : REPOElement
     {
         var newValue = value - precisionDecimal;
 
-		if (stringOptions?.Length > 0 && Math.Abs(value - min) < float.Epsilon)
-			newValue = max;
+        if (stringOptions?.Length > 0 && Math.Abs(value - min) < float.Epsilon)
+            newValue = max;
         else if (newValue < min)
             newValue = min;
         
@@ -116,8 +116,8 @@ public sealed class REPOSlider : REPOElement
     {
         var newValue = value + precisionDecimal;
 
-		if (stringOptions?.Length > 0 && Math.Abs(max - value) < float.Epsilon)
-			newValue = min;
+        if (stringOptions?.Length > 0 && Math.Abs(max - value) < float.Epsilon)
+            newValue = min;
         else if (newValue > max)
             newValue = max;
         
@@ -136,14 +136,16 @@ public sealed class REPOSlider : REPOElement
         isBigSlider = rectTransform.pivot == Vector2.up;
         rectTransform.pivot = Vector2.zero;
         menuPage = GetComponentInParent<MenuPage>();
-		menuScrollBox = GetComponentInParent<MenuScrollBox>();
-		menuID = SemiFunc.MenuGetSelectableID(gameObject);
-        labelTMP = GetComponentInChildren<TextMeshProUGUI>();
+        menuScrollBox = GetComponentInParent<MenuScrollBox>();
+        menuID = SemiFunc.MenuGetSelectableID(gameObject);
+        labelTMP = transform.Find("Element Name").GetComponent<TextMeshProUGUI>();
         valueTMP = transform.Find("Bar Text").GetComponent<TextMeshProUGUI>();
         valueTMP.fontStyle = FontStyles.Normal;
         
         descriptionTMP = Instantiate(valueTMP, transform);
         descriptionTMP.name = "Big Setting Text";
+        if (!isBigSlider)
+            descriptionTMP.rectTransform.anchorMin = descriptionTMP.rectTransform.anchorMax = descriptionTMP.rectTransform.pivot = new Vector2(.5f, .5f);
         descriptionTMP.rectTransform.anchoredPosition = isBigSlider ? new Vector2(0, -20.5f) : new Vector2(5f, -19f);
         descriptionTMP.rectTransform.sizeDelta = new Vector2(251.4f, 31f);
         descriptionTMP.color = new Color(1f, .55f, 0f);
@@ -167,7 +169,7 @@ public sealed class REPOSlider : REPOElement
         labelTMP.rectTransform.localPosition -= movementShift + verticalShift;
 
         descriptionTMP.alignment = TextAlignmentOptions.Center;
-        descriptionTMP.enableWordWrapping = descriptionTMP.enableAutoSizing = false;
+        descriptionTMP.textWrappingMode = TextWrappingModes.NoWrap;
         descriptionTMP.overflowMode = TextOverflowModes.Masking;
         descriptionTMP.fontSize -= 5;
 
@@ -270,15 +272,15 @@ public sealed class REPOSlider : REPOElement
         onValueChanged.Invoke(previousValue = value);
     }
 
-	private void OnTransformParentChanged()
-	{
-		menuScrollBox = GetComponentInParent<MenuScrollBox>();
+    private void OnTransformParentChanged()
+    {
+        menuScrollBox = GetComponentInParent<MenuScrollBox>();
 
-		foreach (var menuButton in GetComponentsInChildren<MenuButton>())
-			REPOReflection.menuButton_MenuScrollBox.SetValue(menuButton, menuScrollBox);
-	}
+        foreach (var menuButton in GetComponentsInChildren<MenuButton>())
+            REPOReflection.menuButton_MenuScrollBox.SetValue(menuButton, menuScrollBox);
+    }
 
-	private void HandleDescription()
+    private void HandleDescription()
     {
         if (descriptionTMP.text == currentDescription)
             return;

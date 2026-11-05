@@ -141,7 +141,10 @@ public sealed class REPOPopupPage : MonoBehaviour
         transform.Find("Panel").SetParent(rectTransform);
         headerTMP.transform.parent.SetParent(rectTransform);
         menuScrollBox.transform.SetParent(rectTransform);
-        
+
+        headerTMP.textWrappingMode = TextWrappingModes.NoWrap;
+        headerTMP.overflowMode = TextOverflowModes.Ellipsis;
+
         pageDimmerGameObject = Instantiate(REPOTemplates.pageDimmerTemplate, transform).gameObject;
         pageDimmerGameObject.transform.SetAsFirstSibling();
         

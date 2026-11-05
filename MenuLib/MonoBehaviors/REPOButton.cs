@@ -58,9 +58,9 @@ public sealed class REPOButton : REPOElement
         previousFontSizeMax = labelTMP.fontSizeMax;
     }
 
-	private void OnTransformParentChanged()
-	{
-		REPOReflection.menuButton_ParentPage.SetValue(menuButton, GetComponentInParent<MenuPage>());
-		REPOReflection.menuButton_MenuScrollBox.SetValue(menuButton, GetComponentInParent<MenuScrollBox>());
-	}
+    private void OnTransformParentChanged()
+    {
+        REPOReflection.menuButton_ParentPage.SetValue(menuButton, GetComponentInParent<MenuPage>());
+        REPOReflection.menuButton_MenuScrollBox.SetValue(menuButton, GetComponentInParent<MenuScrollBox>());
+    }
 }
